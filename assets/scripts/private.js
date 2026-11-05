@@ -2,7 +2,7 @@
 // getItem gives back a JSON string (or null if nothing is saved);
 // JSON.parse() converts that string back into a JS object so we can use
 // session.role, session.username, etc. (JSON.parse(null) is just null)
-const session = JSON.parse(sessionStorage.getItem("session"));
+const session = JSON.parse(sessionStorage.getItem("session")); // JSON string -> JS object
 
 if (!session || !session.authenticated) {
   // not signed in, go sign in

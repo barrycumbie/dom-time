@@ -2,7 +2,7 @@
 // getItem gives back a JSON string (or null if nothing is saved);
 // JSON.parse() converts that string back into a JS object so we can use
 // session.role, session.username, etc. (JSON.parse(null) is just null)
-const session = JSON.parse(sessionStorage.getItem("session"));
+const session = JSON.parse(sessionStorage.getItem("session")); // JSON string -> JS object
 
 if (!session || !session.authenticated) {
   // not signed in, go sign in
@@ -22,7 +22,7 @@ if (!session || !session.authenticated) {
 
 async function showAdmin() {
   // the same appState object index.html uses (JSON string -> JS object)
-  let appState = JSON.parse(sessionStorage.getItem("appState"));
+  let appState = JSON.parse(sessionStorage.getItem("appState")); // JSON string -> JS object
 
   // if the admin never visited index.html, there's no data yet: fetch it
   if (!appState) {
@@ -30,10 +30,10 @@ async function showAdmin() {
     appState = {
       app: { name: "Sock Finder", version: "0.1" },
       user: session,
-      data: await response.json(),
+      data: await response.json(), // JSON text from the file -> JS array of objects
       session: { started: new Date().toISOString() },
     };
-    sessionStorage.setItem("appState", JSON.stringify(appState));
+    sessionStorage.setItem("appState", JSON.stringify(appState)); // JS object -> JSON string
   }
 
   // CURRENT USER
@@ -58,7 +58,7 @@ async function showAdmin() {
       appState.data = appState.data.filter(function (s) {
         return s.id !== sock.id;
       });
-      sessionStorage.setItem("appState", JSON.stringify(appState));
+      sessionStorage.setItem("appState", JSON.stringify(appState)); // JS object -> JSON string
       showAdmin(); // render again with the new state
     });
 
@@ -74,6 +74,7 @@ async function showAdmin() {
   document.querySelector("#storage-keys").textContent = keys.join(", ");
 
   // APP STATE as readable JSON: object -> string. (null, 2) = pretty-print
+  // JS object -> JSON string (so it can be shown as text)
   document.querySelector("#app-state-output").textContent = JSON.stringify(
     appState,
     null,

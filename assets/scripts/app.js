@@ -5,14 +5,14 @@ const addForm = document.querySelector("#add-form");
 const signoutBtn = document.querySelector("#signout-btn");
 
 // who is signed in? (null if nobody) - JSON.parse turns the saved string into an object
-const session = JSON.parse(sessionStorage.getItem("session"));
+const session = JSON.parse(sessionStorage.getItem("session")); // JSON string -> JS object
 
 // our whole app in ONE object (see appState in the lesson)
-let appState = JSON.parse(sessionStorage.getItem("appState"));
+let appState = JSON.parse(sessionStorage.getItem("appState")); // JSON string -> JS object
 
 // save = JS object -> JSON string -> sessionStorage
 function saveState() {
-  sessionStorage.setItem("appState", JSON.stringify(appState));
+  sessionStorage.setItem("appState", JSON.stringify(appState)); // JS object -> JSON string
 }
 
 async function loadState() {

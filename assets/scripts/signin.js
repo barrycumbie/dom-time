@@ -12,7 +12,7 @@ async function findUser(userName, password) {
 
   // response.json() reads the JSON TEXT (a string) from users.json and PARSES it
   // into a real JS array of objects we can use. (async, so we await it)
-  const users = await response.json();
+  const users = await response.json(); // JSON text from the file -> JS array of objects
 
   // OLD WAY: hard-code each array item. Breaks as soon as a 3rd user is added,
   // and the password is stored in a global variable.
@@ -57,7 +57,7 @@ signinBtn.addEventListener("click", async function () {
     };
     // sessionStorage can ONLY store strings, so JSON.stringify() converts our
     // JS object into a JSON string: '{"username":"Jon","authenticated":true,...}'
-    sessionStorage.setItem("session", JSON.stringify(session));
+    sessionStorage.setItem("session", JSON.stringify(session)); // JS object -> JSON string
     window.location.href = "private.html";
   } catch (error) {
     console.error(error);
