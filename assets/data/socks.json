@@ -1,0 +1,6 @@
+[
+  { "id": 1, "title": "Lost Sock", "description": "Black ankle sock", "location": "Drawer 2" },
+  { "id": 2, "title": "Orange Sock", "description": "Wool, very itchy", "location": "Under the couch" },
+  { "id": 3, "title": "Sock With Question Mark", "description": "Nobody knows whose it is", "location": "Dryer" },
+  { "id": 4, "title": "Lasagna Sock", "description": "Smells like lasagna", "location": "Garfield's bed" }
+]

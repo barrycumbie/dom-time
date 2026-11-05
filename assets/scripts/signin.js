@@ -1,67 +1,66 @@
-//TODO: make a doc ready function
-
-console.log("in signin dot js");
-
 const signinBtn = document.querySelector("#signin-btn");
 const pwdBox = document.querySelector("#pwd-box");
 const userBox = document.querySelector("#user-box");
+const message = document.querySelector("#message");
 
-// const hardCodePwd = 'lasagna';
-let jsonPassword = ''; 
-// TODO:  remove for demo. 
-// pwdBox.value = hardCodePwd; 
-
-//fetch()
-
-async function loadOptions(userName) {
+async function findUser(userName, password) {
   const response = await fetch("../assets/data/users.json");
 
   if (!response.ok) {
     throw new Error("Could not load local JSON");
   }
 
-  const data = await response.json();
-  console.log("json data: ", data);
-  
-  if(userName == data[0].name){
-    // garfied
-    jsonPassword = data[0].password; 
-    console.log('garfield json pwd: ', jsonPassword); 
-  }
-  else if(userName == data[1].name){
-      jsonPassword = data[1].password; 
-      console.log('jon json pwd: ', jsonPassword); 
-  } 
+  // response.json() reads the JSON TEXT (a string) from users.json and PARSES it
+  // into a real JS array of objects we can use. (async, so we await it)
+  const users = await response.json();
 
+  // OLD WAY: hard-code each array item. Breaks as soon as a 3rd user is added,
+  // and the password is stored in a global variable.
+  //
+  // if(userName == data[0].name){
+  //   // garfied
+  //   jsonPassword = data[0].password;
+  //   console.log('garfield json pwd: ', jsonPassword);
+  // }
+  // else if(userName == data[1].name){
+  //     jsonPassword = data[1].password;
+  //     console.log('jon json pwd: ', jsonPassword);
+  // }
+
+  // NEW WAY: .find() walks the array for us and returns the FIRST user where
+  // the function returns true (or undefined if nobody matches).
+  // Why it beats a hand-written loop: no counter or index to manage, no
+  // "let match = null" variable to set, it stops as soon as it finds a match,
+  // and it reads like English: "find the user with this name and password".
+  // It works for 2 users or 200 without changing the code.
+  return users.find(
+    (user) =>
+      user.name.toLowerCase() === userName.toLowerCase() &&
+      user.password === password,
+  );
 }
 
-
-
 signinBtn.addEventListener("click", async function () {
-  console.log("pwd value: ", pwdBox.value);
-  console.log("user value: ", userBox.value);
-  const userPwd = pwdBox.value; 
-  const userName = userBox.value; 
+  try {
+    const user = await findUser(userBox.value.trim(), pwdBox.value);
 
-  await loadOptions(userName);
+    if (!user) {
+      message.textContent = "nope. try again.";
+      pwdBox.value = "";
+      return;
+    }
 
-
-console.log('use pwd: ', userPwd);
-// console.log('hard code pwd: ', hardCodePwd);
-//console.log('json pwd: ', jsonPassword);
-
-  if(userPwd == jsonPassword){
-    console.log('signed in');
-    sessionStorage.setItem('signedIn', 'true');
-    // sessionStorage.setItem('signedIn', '');
-    console.log('now go to private page');
-    //window.location.href = "private.html"
+    const session = {
+      username: user.name,
+      authenticated: true,
+      role: user.role,
+    };
+    // sessionStorage can ONLY store strings, so JSON.stringify() converts our
+    // JS object into a JSON string: '{"username":"Jon","authenticated":true,...}'
+    sessionStorage.setItem("session", JSON.stringify(session));
+    window.location.href = "private.html";
+  } catch (error) {
+    console.error(error);
+    message.textContent = "something went wrong. try again later.";
   }
-  else{
-    console.log('NOT signed in');
-    document.querySelector('#message').textContent = "nope. try again."
-    //  TODO: try this. document.querySelector('#message').placeholder = "nope. try again."
-    pwdBox.value = ''; 
-  }
-
 });

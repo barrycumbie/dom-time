@@ -1,13 +1,23 @@
-console.log('in private dot js');
+// get the session we saved at sign-in.
+// getItem gives back a JSON string (or null if nothing is saved);
+// JSON.parse() converts that string back into a JS object so we can use
+// session.role, session.username, etc. (JSON.parse(null) is just null)
+const session = JSON.parse(sessionStorage.getItem("session"));
 
-const signedIn = sessionStorage.getItem('signedIn');
+if (!session || !session.authenticated) {
+  // not signed in, go sign in
+  window.location.href = "signin.html";
+} else {
+  document.querySelector("#welcome").textContent =
+    "welcome, " + session.username + " (" + session.role + ")";
 
+  // front-end only: hiding the link is not real security
+  if (session.role === "admin") {
+    document.querySelector("#admin-link").hidden = false;
+  }
 
-if(signedIn === 'true'){
-    console.log('ye,s singed in');
+  document.querySelector("#signout-btn").addEventListener("click", function () {
+    sessionStorage.removeItem("session");
+    window.location.href = "signin.html";
+  });
 }
-else{
-    console.log('no, not sinage in');
-    window.location.href = 'signin.html'
-}
-

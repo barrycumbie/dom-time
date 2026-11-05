@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>admin</title>
+  </head>
+  <body>
+    <nav>
+      <a href="../index.html">home</a>
+      <a href="private.html">private</a>
+      <a href="admin.html">admin</a>
+      <button id="signout-btn">sign out</button>
+    </nav>
+
+    <div id="admin-content" hidden>
+      <h1>🔐 admin area</h1>
+
+      <h2>current user</h2>
+      <p id="user-info"></p>
+
+      <h2>app data</h2>
+      <p id="record-count"></p>
+      <ul id="record-list"></ul>
+
+      <h2>sessionStorage keys</h2>
+      <p id="storage-keys"></p>
+
+      <h2>debug</h2>
+      <pre id="debug-info"></pre>
+
+      <h2>app state JSON</h2>
+      <pre id="app-state-output"></pre>
+    </div>
+    <script src="../assets/scripts/admin.js"></script>
+  </body>
+</html>
